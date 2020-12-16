@@ -5,7 +5,8 @@ module.exports = {
   },
   extends: [
     'plugin:vue/essential',
-    '@vue/airbnb',
+    // '@vue/airbnb',
+    'nc_ursa',
     '@vue/typescript/recommended',
   ],
   parserOptions: {
