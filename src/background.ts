@@ -23,6 +23,8 @@ async function createWindow() {
       nodeIntegration: (process.env
         .ELECTRON_NODE_INTEGRATION as unknown) as boolean,
     },
+    titleBarStyle: 'hidden', // 隐藏mac OS 标题栏
+    transparent: true,
   });
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
@@ -80,3 +82,4 @@ if (isDevelopment) {
     });
   }
 }
+console.log(process);
