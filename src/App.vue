@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="window-drag"></div>
+    <div class="window-drag" @dblclick="toggleWindowMax"></div>
     <div class="main-container">
       <sidebar class="sidebar--left">
         <div class="side-function add-btn" @click="addAccount">
@@ -11,6 +11,9 @@
         <template v-if="isAccountFormShow">
           <account-login></account-login>
         </template>
+        <template v-else>
+<!--          todo: web界面-->
+        </template>
       </div>
     </div>
   </div>
@@ -20,6 +23,8 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Sidebar from '@/components/sidebar/Sidebar.vue';
 import AccountLogin from '@/views/account-login/AccountLogin.vue';
+import { toggleWindowMax } from '@/electron-api/renderer/send';
+import { Storage } from '@/utils/Storage';
 @Component({
   components: { AccountLogin, Sidebar },
 })
@@ -27,15 +32,35 @@ export default class App extends Vue {
   // mixins
   // data
   isAccountFormShow = false
+  isMaximizeWindow = false
   // props
   // computed
   // watch
   // life cycle
+  created() {
+    const localAccounts = Storage.getAccounts();
+    if (!localAccounts) {
+      this.isAccountFormShow = true;
+    } else {
+      alert('there is Accounts');
+    }
+  }
   // emit
   // methods
   addAccount() {
     console.log('add btn');
     this.isAccountFormShow = true;
+  }
+
+  /**
+   * 最大化窗口
+   */
+  toggleWindowMax() {
+    console.log('toggle window max');
+    this.isMaximizeWindow = !this.isMaximizeWindow;
+
+    console.log(this.isMaximizeWindow);
+    toggleWindowMax(this.isMaximizeWindow);
   }
 }
 </script>
@@ -53,6 +78,7 @@ export default class App extends Vue {
   justify-content: flex-start;
   align-items: stretch;
   height: 100vh;
+  position: relative;
 }
 .sidebar--left {
   padding-top: 25px;
@@ -88,6 +114,7 @@ export default class App extends Vue {
 .page-wrap {
   width: 100%;
   height: 100%;
+  position: relative;
 }
 
 </style>

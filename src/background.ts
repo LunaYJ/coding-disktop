@@ -3,6 +3,9 @@
 import { app, protocol, BrowserWindow } from 'electron';
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
+
+import { ipcMainRecive } from '@/electron-api/main/receive';
+
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // Scheme must be registered before the app is ready
@@ -10,14 +13,16 @@ protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } },
 ]);
 
+let win = null;
 async function createWindow() {
   // Create the browser window.
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 1200,
     height: 900,
     backgroundColor: '#ffffff',
     webPreferences: {
       webSecurity: false, // 取消跨域限制
+      // enableRemoteModule: true, // 开启remote
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: (process.env
@@ -36,6 +41,11 @@ async function createWindow() {
     // Load the index.html when not in development
     win.loadURL('app://./index.html');
   }
+
+  /**
+   * 主进程接收事件
+   */
+  ipcMainRecive(win);
 }
 
 // Quit when all windows are closed.
@@ -82,4 +92,4 @@ if (isDevelopment) {
     });
   }
 }
-console.log(process);
+// console.log(process);
