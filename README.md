@@ -1,34 +1,8 @@
 # coding-disktop
 
-## Project setup
-```
-npm install
-```
+## 功能
+便于拥有多个coding账号时多账号见切换
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Feature
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your unit tests
-```
-npm run test:unit
-```
-
-### Run your end-to-end tests
-```
-npm run test:e2e
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## TODO
