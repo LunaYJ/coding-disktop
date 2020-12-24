@@ -11,6 +11,9 @@ export class Storage {
   /**
    * 增加账户
    * @param data
+   * @returns {Object}
+   * @returns {String} .status - 处理状态 ok：成功 / fail：失败
+   * @returns {String} .message - 处理信息
    */
   static addAccount(data: AccountItemData) {
     const accountsObj = this.parseAccounts();

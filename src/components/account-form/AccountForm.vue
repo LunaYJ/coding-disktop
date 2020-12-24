@@ -41,6 +41,11 @@ import { shell } from 'electron';
 import { Storage } from '@/utils/Storage';
 import { AccountItemData } from '@/interface/user';
 
+interface ErrMsg {
+  url: any;
+  email: any;
+  password: any;
+}
 @Component
 export default class AccountForm extends Vue {
 // mixins
@@ -49,6 +54,18 @@ export default class AccountForm extends Vue {
     url: '',
     email: '',
     password: '',
+  }
+  // errMsg: ErrMsg = {
+  //   url: this.$t('err.teamDomain'),
+  //   email: this.$t('err.loginEmail'),
+  //   password: this.$t('err.loginPwd'),
+  // }
+  get errMsg() {
+    return {
+      url: this.$t('err.teamDomain'),
+      email: this.$t('err.loginEmail'),
+      password: this.$t('err.loginPwd'),
+    };
   }
   registUrl = 'https://e.coding.net/register'
   // props
@@ -65,7 +82,8 @@ export default class AccountForm extends Vue {
     for (const key in this.formData) {
       const item = this.formData[key as keyof AccountItemData];
       if (!item) {
-        alert('请填写');
+        console.log(key);
+        alert(`${this.errMsg[key as keyof ErrMsg]}`);
         return;
       }
     }
@@ -80,7 +98,10 @@ export default class AccountForm extends Vue {
       password: data.password,
       label: this.formData.url,
     };
-    Storage.addAccount(account);
+    const { status, message } = Storage.addAccount(account);
+    if (status === 'fail') {
+      alert(message);
+    }
   }
 }
 </script>

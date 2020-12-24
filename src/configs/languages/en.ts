@@ -14,4 +14,9 @@ export const en = {
     placeholderPwd: 'Password',
     login: 'Sign in',
   },
+  err: {
+    teamDomain: 'Login Address is required',
+    loginEmail: 'Login Email is required',
+    loginPwd: 'Login Password is required',
+  },
 };

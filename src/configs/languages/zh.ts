@@ -14,4 +14,9 @@ export const zh = {
     placeholderPwd: '密码',
     login: '登录',
   },
+  err: {
+    teamDomain: '请填写团队域名',
+    loginEmail: '请填写登录邮箱',
+    loginPwd: '请填写登录密码',
+  },
 };

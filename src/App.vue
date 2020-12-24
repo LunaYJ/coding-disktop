@@ -41,8 +41,6 @@ export default class App extends Vue {
     const localAccounts = Storage.getAccounts();
     if (!localAccounts) {
       this.isAccountFormShow = true;
-    } else {
-      alert('there is Accounts');
     }
   }
   // emit
