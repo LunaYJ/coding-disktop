@@ -13,7 +13,7 @@
                 https://
               </span>
             </div>
-            <input type="text" v-model="formData.url" class="form-control" :placeholder="$t('login.placeholderUrl')">
+            <input type="text" v-model="formData.url" :class="{'ipt--err': errIpt === 'url'}" class="form-control" :placeholder="$t('login.placeholderUrl')">
             <div class="input-group--append">
               <span class="input-group__text">
                 .coding.net
@@ -23,11 +23,11 @@
         </div>
         <div class="form-group">
           <label>{{ $t('login.email') }}</label>
-          <input type="text" v-model="formData.email" class="form-control" :placeholder="$t('login.placeholderEmail')">
+          <input type="text" v-model="formData.email" :class="{'ipt--err': errIpt === 'email'}" class="form-control" :placeholder="$t('login.placeholderEmail')">
         </div>
         <div class="form-group">
           <label>{{ $t('login.password') }}</label>
-          <input type="password" v-model="formData.password" class="form-control" :placeholder="$t('login.placeholderPwd')">
+          <input type="password" v-model="formData.password" :class="{'ipt--err': errIpt === 'password'}" class="form-control" :placeholder="$t('login.placeholderPwd')">
         </div>
         <button type="button" class="btn btn--block btn-primary" @click="login">{{ $t('login.login') }}</button>
       </form>
@@ -40,6 +40,8 @@ import { Component, Vue } from 'vue-property-decorator';
 import { shell } from 'electron';
 import { Storage } from '@/utils/Storage';
 import { AccountItemData } from '@/interface/user';
+import { hideLoginForm } from '@/apis/accountsApi';
+import { sendAccountFromRender } from '@/electron-api/renderer/send';
 
 interface ErrMsg {
   url: any;
@@ -55,11 +57,10 @@ export default class AccountForm extends Vue {
     email: '',
     password: '',
   }
-  // errMsg: ErrMsg = {
-  //   url: this.$t('err.teamDomain'),
-  //   email: this.$t('err.loginEmail'),
-  //   password: this.$t('err.loginPwd'),
-  // }
+  errIpt = ''
+  registUrl = 'https://e.coding.net/register'
+  // props
+  // computed
   get errMsg() {
     return {
       url: this.$t('err.teamDomain'),
@@ -67,9 +68,6 @@ export default class AccountForm extends Vue {
       password: this.$t('err.loginPwd'),
     };
   }
-  registUrl = 'https://e.coding.net/register'
-  // props
-  // computed
   // watch
   // life cycle
   // emit
@@ -77,15 +75,31 @@ export default class AccountForm extends Vue {
   openInOutBrowser(url: string) {
     shell.openExternal(url);
   }
-  login() {
-    console.log(this.formData);
+
+  /**
+   * 检查输入项是否都已填写
+   * @returns {Boolean} - 表单是否都已填写
+   */
+  verifyForm() {
     for (const key in this.formData) {
       const item = this.formData[key as keyof AccountItemData];
       if (!item) {
         console.log(key);
         alert(`${this.errMsg[key as keyof ErrMsg]}`);
-        return;
+        this.errIpt = key;
+        return false;
       }
+    }
+    return true;
+  }
+
+  /**
+   * 登录
+   */
+  login() {
+    console.log(this.formData);
+    if (!this.verifyForm()) {
+      return;
     }
     const url = `https://${this.formData.url}.coding.net/`;
     const data = {
@@ -101,6 +115,10 @@ export default class AccountForm extends Vue {
     const { status, message } = Storage.addAccount(account);
     if (status === 'fail') {
       alert(message);
+    } else {
+      hideLoginForm();
+      this.$store.dispatch('setCurrAccount', account);
+      sendAccountFromRender(account);
     }
   }
 }

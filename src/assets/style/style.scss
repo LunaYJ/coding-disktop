@@ -10,11 +10,21 @@ body {
 img {
   max-width: 100%;
 }
+svg {
+  max-width: 100%;
+}
 a {
   &[href] {
     color: $link-color;
     text-decoration: none;
   }
+}
+webview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 // common
@@ -64,6 +74,9 @@ a {
     border-color: #3385ff;
     outline: 0;
     z-index: 1;
+  }
+  &.ipt--err {
+    border-color: $err-color!important;
   }
 }
 .input-group {

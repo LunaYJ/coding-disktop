@@ -12,4 +12,9 @@ export function ipcMainRecive(win: any) {
       win.setSize(1200, 900);
     }
   });
+  ipcMain.on('accountFromRender', (evt, arg) => {
+    if (arg) {
+      win.webContents.send('accountFromMain', arg);
+    }
+  });
 }
