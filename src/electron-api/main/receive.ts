@@ -14,7 +14,9 @@ export function ipcMainRecive(win: any) {
   });
   ipcMain.on('accountFromRender', (evt, arg) => {
     if (arg) {
+      // evt.reply('accountFromMain', arg);
       win.webContents.send('accountFromMain', arg);
+      global.currAccount = arg;
     }
   });
 }
