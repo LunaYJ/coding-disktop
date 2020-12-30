@@ -23,7 +23,7 @@ import AccountLogin from '@/views/account-login/AccountLogin.vue';
 import { toggleWindowMax } from '@/electron-api/renderer/send';
 import { Storage } from '@/utils/Storage';
 import LeftSidebar from '@/components/left-sidebar/LeftSidebar.vue';
-import { showLoginForm } from '@/apis/accountsApi';
+import * as api from '@/apis/accountsApi';
 import EWebview from '@/components/e-webview/EWebview.vue';
 
 @Component({
@@ -46,7 +46,7 @@ export default class App extends Vue {
   created() {
     const localAccounts = Storage.getAccounts();
     if (!localAccounts) {
-      showLoginForm();
+      api.showLoginForm();
     }
   }
   // emit

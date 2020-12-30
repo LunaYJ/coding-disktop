@@ -60,15 +60,6 @@
     "vue-cli-plugin-electron-builder": "~2.0.0-rc.5",
     "vue-template-compiler": "^2.6.11"
   },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
-  "lint-staged": {
-    "*.{js,jsx,vue,ts,tsx}": [
-      "vue-cli-service lint",
-      "git add"
-    ]
-  },
   "build": {
     "appId": "CODING-Disktop",
     "mac": {
@@ -77,5 +68,14 @@
     "win": {
       "icon": "build/icons/app-icon.png"
     }
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,vue,ts,tsx}": [
+      "vue-cli-service lint",
+      "git add"
+    ]
   }
 }

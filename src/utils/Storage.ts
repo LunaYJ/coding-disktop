@@ -27,6 +27,10 @@ export class Storage {
           };
         }
       }
+      const newAccounts = this.formatAccount(data);
+      Object.assign(accountsObj, newAccounts);
+      console.log('new accounts obj', accountsObj);
+      localStorage.setItem('accounts', this.stringifyAccounts(accountsObj));
       return {
         status: 'ok',
         message: '',

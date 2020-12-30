@@ -4,6 +4,7 @@ export interface AccountItemData {
   password: string;
   eid?: string;
   label?: string;
+  teamAvatar?: string;
 }
 export interface AccountItem {
   // label: AccountLabel;

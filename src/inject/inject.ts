@@ -1,23 +1,30 @@
-import { AccountItemData } from '@/interface/user';
-
-export function loginInject(url: string, account: any) {
+export function loginInject(url: string) {
   if (url.indexOf('login') >= 0) {
-    console.log(123, account);
-    const timer: any = {};
-    for (const key in account) {
-      console.log('key', key);
-      timer[key] = setInterval(() => {
-        if (document.getElementById(key)) {
-          clearInterval(timer[key]);
-          console.log(key, document.getElementById(key));
-          const dom = document.getElementById(key) as HTMLInputElement;
+    return `
+    const { remote: ERemote } = require('electron');
 
-          // todo 修改表单的值
-          dom.value = account[key];
+    console.log("account");
+    console.log(ERemote.getGlobal('currAccount'));
+    const account = ERemote.getGlobal('currAccount').email;
+    const password = ERemote.getGlobal('currAccount').password;
+    let checkCount = 0;
+    const timer = setInterval(() => {
+      console.log('timer');
+      if (document.getElementById('account')) {
+        console.log('account: ', account);
+        console.log('password: ', password);
+        if (document.getElementById('account').value !== account ) {
+          checkCount = 0;
+          document.getElementById('account').value = account;
+          document.getElementById('password').value = password;
+        } else {
+          checkCount++;
         }
-      }, 100);
-      // (document.getElementById(key) as HTMLInputElement).value = account[key];
-    }
-    // alert(1);
+        if (checkCount >= 3) {
+          clearInterval(timer);
+        }
+      }
+    }, 100);
+    `;
   }
 }

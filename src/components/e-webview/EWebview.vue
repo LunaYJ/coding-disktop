@@ -7,6 +7,7 @@
       nodeintegration
       disablewebsecurity
       allowpopups
+      enableremotemodule="true"
     ></webview>
     <loading v-if="isLoadingShow"></loading>
   </div>
@@ -38,25 +39,18 @@ export default class EWebview extends Vue {
     this.$nextTick(() => {
       const webview = this.$refs.webview as any;
 
-      getAccountFromMain((evt: any, arg: any) => {
-        webview.addEventListener('did-start-loading', () => {
-          console.log('loading');
-          this.isLoadingShow = true;
-        });
-        console.log('arg', arg);
-        webview.addEventListener('did-stop-loading', () => {
-          console.log('loading stop');
-          this.isLoadingShow = false;
-        });
-        webview.addEventListener('dom-ready', () => {
-          webview.openDevTools();
-          const webUrl = webview.getURL();
-          const injectData = {
-            account: arg.email,
-            password: arg.password,
-          };
-          webview.executeJavaScript(loginInject(webUrl, injectData));
-        });
+      webview.addEventListener('did-start-loading', () => {
+        console.log('loading');
+        this.isLoadingShow = true;
+      });
+      webview.addEventListener('did-stop-loading', () => {
+        console.log('loading stop');
+        this.isLoadingShow = false;
+      });
+      webview.addEventListener('dom-ready', () => {
+        webview.openDevTools();
+        const webUrl = webview.getURL();
+        webview.executeJavaScript(loginInject(webUrl));
       });
       // this.preloadPath = `file://${require('path').resolve('public/js/extra/login-fill.js')}`;
     });

@@ -38,10 +38,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { shell } from 'electron';
-import { Storage } from '@/utils/Storage';
 import { AccountItemData } from '@/interface/user';
-import { hideLoginForm } from '@/apis/accountsApi';
-import { sendAccountFromRender } from '@/electron-api/renderer/send';
+import * as api from '@/apis/accountsApi';
 
 interface ErrMsg {
   url: any;
@@ -111,15 +109,9 @@ export default class AccountForm extends Vue {
       email: data.account,
       password: data.password,
       label: this.formData.url,
+      teamAvatar: '',
     };
-    const { status, message } = Storage.addAccount(account);
-    if (status === 'fail') {
-      alert(message);
-    } else {
-      hideLoginForm();
-      this.$store.dispatch('setCurrAccount', account);
-      sendAccountFromRender(account);
-    }
+    api.addAccount(account);
   }
 }
 </script>

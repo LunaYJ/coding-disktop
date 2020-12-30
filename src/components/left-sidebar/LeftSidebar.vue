@@ -6,7 +6,7 @@
           <div class="switcher-avatar">
             <default-avatar color="#fff"></default-avatar>
           </div>
-          <p class="switcher-title">{{key}}</p>
+          <p class="switcher__title">{{key}}</p>
         </div>
       </template>
     </template>
@@ -19,7 +19,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Sidebar from '@/components/sidebar/Sidebar.vue';
-import { changeCurrAccount, hideLoginForm, showLoginForm } from '@/apis/accountsApi';
+import * as api from '@/apis/accountsApi';
 import DefaultAvatar from '@/components/default-avatar/DefaultAvatar.vue';
 import { sendAccountFromRender } from '@/electron-api/renderer/send';
 
@@ -47,13 +47,13 @@ export default class LeftSidebar extends Vue {
     localStorage.setItem('accountKey', key);
     const account = this.allAccounts[key];
     // console.log(account);
-    hideLoginForm();
-    changeCurrAccount(account);
+    api.hideLoginForm();
+    api.changeCurrAccount(account);
     sendAccountFromRender(account);
   }
   addAccount() {
     console.log('add btn');
-    showLoginForm();
+    api.showLoginForm();
   }
 }
 </script>
@@ -76,7 +76,7 @@ export default class LeftSidebar extends Vue {
       font-size: 12px;
       word-break: break-all;
       text-align: center;
-      opacity: .7;
+      opacity: .5;
       transition: opacity .5s 0s;
       &:hover {
         opacity: 1;
@@ -111,7 +111,8 @@ export default class LeftSidebar extends Vue {
   width: 34px;
   margin: 0 auto;
 }
-.switcher-title {
+.switcher__title {
   margin-top: 5px;
+  line-height: 1.14;
 }
 </style>
