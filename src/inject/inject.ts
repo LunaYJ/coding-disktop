@@ -15,8 +15,14 @@ export function loginInject(url: string) {
         console.log('password: ', password);
         if (document.getElementById('account').value !== account ) {
           checkCount = 0;
-          document.getElementById('account').value = account;
-          document.getElementById('password').value = password;
+          setTimeout(() => {
+            document.getElementById('account').value = account;
+            document.getElementById('account').setAttribute('value', account);
+            setTimeout(() => {
+              document.getElementById('password').value = password;
+              document.getElementById('password').setAttribute('value', password);
+            }, 500)
+          }, 500)
         } else {
           checkCount++;
         }
